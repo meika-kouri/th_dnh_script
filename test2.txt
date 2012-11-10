@@ -1,42 +1,50 @@
 #“Œ•û’e–‹•—
-#Title["‚·‚«‚Ü‚Í‚©‚è"]
-#Text["“™•3wayA‚Ç‚ê‚¾‚¯‚Ì•‚ª‚ ‚ê‚Î•ª‚©‚ê‚ÄŒ©‚¦‚é/ŠÔ‚ð”²‚¯‚ç‚ê‚é‚©’²‚×‚é"]
-
-script_enemy_main {
+#ScriptVersion[2]
+#Title[‚·‚«‚Ü‚Í‚©‚è]
+#Text[“™•3wayA‚Ç‚ê‚¾‚¯‚Ì•‚ª‚ ‚ê‚Î•ª‚©‚ê‚ÄŒ©‚¦‚é/ŠÔ‚ð”²‚¯‚ç‚ê‚é‚©’²‚×‚é]
+script_enemy_main
+{
 	let imgBoss = "script\img\ExRumia.png";
 	let frame = 0;
 	let nwidth = 1;
 
-	@Initialize {
+	@Initialize
+	{
 		SetX(GetCenterX);
 		SetY(GetClipMinY + 120);
 		SetLife(2000);
+
 		LoadGraphic(imgBoss);
 		SetTexture(imgBoss);
-		SetGraphicRect(0, 0, 63, 63);
+		SetGraphicRect(0,0,63,63);
 	}
 
-	@MainLoop {
+	@MainLoop
+	{
 		SetCollisionA(GetX, GetY, 24);
 		SetCollisionB(GetX, GetY, 24);
-
 		frame++;
-		if(frame == 15) {
+		if (frame>=nwidth / 2) {
 			let x = GetX;
 			let y = GetY;
 			CreateShot01(x, y, 2, 90, WHITE01, 0);
-			CreateShot01(x + nwidth, y, 2, 90, WHITE01, 0);
-			CreateShot01(x - nwidth, y, 2, 90, WHITE01, 0);
+			CreateShot01((x + nwidth), y, 2, 90, WHITE01, 0);
+			CreateShot01((x - nwidth), y, 2, 90, WHITE01, 0);
 			nwidth += 1;
+			if (nwidth > GetCenterX) {
+				nwidth = 1
+			}
 			frame = 0;
 		}
 	}
 
-	@DrawLoop {
+	@DrawLoop
+	{
 		DrawGraphic(GetX, GetY);
 	}
 
-	@Finalize {
+	@Finalize
+	{
 		DeleteGraphic(imgBoss);
 	}
 }
